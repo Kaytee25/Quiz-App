@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Quiz App</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+
+    <div id="auth-screen">
+      <h1>Quiz App</h1>
+      <div id="login-form">
+        <h2>Login</h2>
+        <input type="email" id="login-email" placeholder="Email" />
+        <input type="password" id="login-password" placeholder="Password" />
+        <button id="login-button">Login</button>
+        <p>or <a href="#" id="show-register">Register</a></p>
+      </div>
+      <div id="register-form" class="hidden">
+        <h2>Register</h2>
+        <input type="email" id="register-email" placeholder="Email" />
+        <input type="password" id="register-password" placeholder="Password" />
+        <button id="register-button">Register</button>
+        <p>or <a href="#" id="show-login">Login</a></p>
+      </div>
+    </div>
+
+    <div id="quiz-app-screen" class="hidden">
+      <div id="header">
+        <p>Welcome <span id="user-email"></span> | <button id="logout-button">Logout</button></p>
+      </div>
+
+      <div id="category-screen">
+        <h2>Select a Category</h2>
+        <div class="categories">
+          <button data-cat="21">Sports</button>
+          <button data-cat="11">Entertainment</button>
+          <button data-cat="9">English / General Knowledge</button>
+          <button data-cat="17">Science & Nature</button>
+        </div>
+      </div>
+
+      <div id="quiz-screen" class="hidden">
+        <div id="progress">
+          <div id="progress-inner"></div>
+        </div>
+        <h2 id="category-title"></h2>
+        <div id="timer">Time left: <span id="time-left"></span>s</div>
+        <div id="question-container">
+          <p id="question-text"></p>
+          <div id="options"></div>
+        </div>
+        <button id="next-btn" class="hidden">Next</button>
+      </div>
+
+      <div id="result-screen" class="hidden">
+        <h2>Your Score</h2>
+        <p id="score-text"></p>
+        <button id="restart-btn">Back to Categories</button>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- Firebase JS SDK -->
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+
+  <script src="script.js"></script>
+</body>
+</html>
