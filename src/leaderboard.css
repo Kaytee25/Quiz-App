@@ -4,7 +4,7 @@
   box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
   padding: 32px 24px;
   margin: 32px auto;
-  max-width: 700px;
+  max-width: 800px;
   color: #fff;
   animation: leaderboardFadeIn 1s;
 }
@@ -54,6 +54,28 @@
   transition: background 0.2s;
 }
 
+.leaderboard-table td:first-child {
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #ffd700;
+  text-shadow: 0 2px 8px #000a;
+}
+
+.leaderboard-table td:not(:first-child) {
+  font-weight: bold;
+  font-size: 1.15rem;
+}
+
+.leaderboard-table td:not(:first-child):not(:empty) {
+  color: #ffd700;
+  text-shadow: 0 1px 4px #000a;
+}
+
+.leaderboard-table td:empty, .leaderboard-table td:contains('-') {
+  color: #bbb;
+  font-style: italic;
+}
+
 .leaderboard-table tr:hover td {
   background: rgba(255, 215, 0, 0.12);
   color: #232526;
@@ -70,19 +92,4 @@
 }
 .leaderboard-table tr:last-child td:last-child {
   border-bottom-right-radius: 12px;
-}
-
-.leaderboard-table td:not(:first-child) {
-  font-weight: bold;
-  font-size: 1.15rem;
-}
-
-.leaderboard-table td:not(:first-child):not(:empty) {
-  color: #ffd700;
-  text-shadow: 0 1px 4px #000a;
-}
-
-.leaderboard-table td:empty, .leaderboard-table td:contains('-') {
-  color: #bbb;
-  font-style: italic;
 }
