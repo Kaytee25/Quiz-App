@@ -4,7 +4,23 @@ import './difficulty-selector.css';
 import Leadboard from './Leadboard';
 import easyQuestions from './questions/ScienceAndTechnology/easy.json';
 import mediumQuestions from './questions/ScienceAndTechnology/medium.json';
-import hardQuestions from './questions/ScienceAndTechnology/hard.json'; 
+import hardQuestions from './questions/ScienceAndTechnology/hard.json';
+import anyScienceQuestions from './questions/ScienceAndTechnology/any.json';
+
+import mathEasyQuestions from './questions/Mathematics/easy.json';
+import mathMediumQuestions from './questions/Mathematics/medium.json';
+import mathHardQuestions from './questions/Mathematics/hard.json';
+import mathAnyQuestions from './questions/Mathematics/any.json';
+
+import historyEasyQuestions from './questions/History/easy.json';
+import historyMediumQuestions from './questions/History/medium.json';
+import historyHardQuestions from './questions/History/hard.json';
+import historyAnyQuestions from './questions/History/any.json';
+
+import generalKnowledgeEasyQuestions from './questions/GeneralKnowledge/easy.json';
+import generalKnowledgeMediumQuestions from './questions/GeneralKnowledge/medium.json';
+import generalKnowledgeHardQuestions from './questions/GeneralKnowledge/hard.json';
+import generalKnowledgeAnyQuestions from './questions/GeneralKnowledge/any.json';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -74,43 +90,130 @@ function App() {
     setLoading(true);
     setError(null);
     try {
-      // Find the selected category object
       const selectedCat = categories.find(cat => cat.id === categoryId);
 
-      // Use easy.json for Science & Technology + easy
+      // Science & Technology
       if (
         selectedCat &&
-        selectedCat.name === "Science & Technology" &&
-        difficultyLevel === "easy"
+        selectedCat.name === "Science & Technology"
       ) {
-        setQuestions(shuffleArray(easyQuestions));
-        setSelectedCategory(selectedCat);
-        setLoading(false);
-        return;
+        if (difficultyLevel === "easy") {
+          setQuestions(shuffleArray(easyQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "medium") {
+          setQuestions(shuffleArray(mediumQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "hard") {
+          setQuestions(shuffleArray(hardQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "any") {
+          setQuestions(shuffleArray(anyScienceQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
       }
 
-      // Use medium.json for Science & Technology + medium
+      // Mathematics
       if (
         selectedCat &&
-        selectedCat.name === "Science & Technology" &&
-        difficultyLevel === "medium"
+        selectedCat.name === "Mathematics"
       ) {
-        setQuestions(shuffleArray(mediumQuestions));
-        setSelectedCategory(selectedCat);
-        setLoading(false);
-        return;
+        if (difficultyLevel === "easy") {
+          setQuestions(shuffleArray(mathEasyQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "medium") {
+          setQuestions(shuffleArray(mathMediumQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "hard") {
+          setQuestions(shuffleArray(mathHardQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "any") {
+          setQuestions(shuffleArray(mathAnyQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
       }
 
-      // Use hard.json for Science & Technology + hard
+      // History
       if (
         selectedCat &&
-        selectedCat.name === "Science & Technology" &&
-        difficultyLevel === "hard"
+        selectedCat.name === "History"
       ) {
-        setQuestions(shuffleArray(hardQuestions));
-        setSelectedCategory(selectedCat);
-        setLoading(false);
-        return;
+        if (difficultyLevel === "easy") {
+          setQuestions(shuffleArray(historyEasyQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "medium") {
+          setQuestions(shuffleArray(historyMediumQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "hard") {
+          setQuestions(shuffleArray(historyHardQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "any") {
+          setQuestions(shuffleArray(historyAnyQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+      }
+
+      // General Knowledge
+      if (
+        selectedCat &&
+        selectedCat.name === "General Knowledge"
+      ) {
+        if (difficultyLevel === "easy") {
+          setQuestions(shuffleArray(generalKnowledgeEasyQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "medium") {
+          setQuestions(shuffleArray(generalKnowledgeMediumQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "hard") {
+          setQuestions(shuffleArray(generalKnowledgeHardQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
+        if (difficultyLevel === "any") {
+          setQuestions(shuffleArray(generalKnowledgeAnyQuestions));
+          setSelectedCategory(selectedCat);
+          setLoading(false);
+          return;
+        }
       }
 
       // Otherwise, fetch from backend
@@ -123,7 +226,6 @@ function App() {
         throw new Error('Failed to load questions');
       }
       const data = await response.json();
-      // Shuffle questions for variety
       const shuffledQuestions = shuffleArray(data.questions || []);
       setQuestions(shuffledQuestions);
       setSelectedCategory(data.category);
@@ -326,7 +428,7 @@ function App() {
                   <p className="category-description">{category.description}</p>
                   <div className="category-meta">
                     <div className="category-info-row">
-                      <span className="question-count">{category.questionCount} questions</span>
+                      <span className="question-count">25 questions</span>
                       {category.highScore > 0 && (
                         <div className="high-score-badge">
                           <span className="trophy-icon">Best: {Math.round(category.highScore)}%</span>
