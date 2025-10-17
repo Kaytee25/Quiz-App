@@ -322,51 +322,32 @@ function App() {
     setTotalTimeElapsed(timeElapsed);
 
     try {
-      // Detect if using easy.json questions
-      const isEasyScienceTech =
-        selectedCategory &&
-        selectedCategory.name === "Science & Technology" &&
-        difficulty === "easy";
-
-      const payload = {
-        answers: selectedAnswers,
-        category: selectedCategory.id,
-        timeElapsed: Math.floor(timeElapsed / 1000)
-      };
-
-      // If using easy.json, send questions too
-      if (isEasyScienceTech) {
-        payload.questions = questions;
-      }
-
-      const response = await fetch(`${API_BASE_URL}/check-answers`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!response.ok) {
-        throw new Error('Failed to submit quiz');
-      }
-
-      const result = await response.json();
-
-      // Track wrong answers for retry feature
-      const wrongQs = [];
-      result.results.forEach((r, index) => {
-        if (!r.correct) {
-          wrongQs.push(questions[index]);
+      // Calculate score locally
+      let correct = 0;
+      let wrongQs = [];
+      questions.forEach((q, idx) => {
+        if (selectedAnswers[idx] === q.correct) {
+          correct++;
+        } else {
+          wrongQs.push(q);
         }
       });
-      setWrongAnswers(wrongQs);
-
-      setScore(result);
-      setAppState('results');
+      const total = questions.length;
+      const scorePercent = (correct / total) * 100;
 
       // Save user score to leaderboard
-      saveUserScore(loggedInUser, selectedCategory.name, Math.round(result.score));
+      saveUserScore(loggedInUser, selectedCategory.name, Math.round(scorePercent));
+
+      setWrongAnswers(wrongQs);
+
+      // Set score object in state
+      setScore({
+        correct,
+        total,
+        score: scorePercent,
+        // Optionally add more fields if needed
+      });
+      setAppState('results');
     } catch (err) {
       setError(err.message);
       console.error('Error submitting quiz:', err);
@@ -527,28 +508,33 @@ function App() {
 
           <div className="detailed-results">
             <h3>Review Your Answers</h3>
-            {score.results && score.results.map((result, index) => {
-              const questionData = questions[index];
+            {questions.map((questionData, index) => {
+              // Find user's answer and correctness
+              const userAnswerIndex = selectedAnswers[index];
+              const userAnswer = userAnswerIndex !== undefined ? questionData.options[userAnswerIndex] : 'No answer';
+              const correctAnswer = questionData.options[questionData.correct];
+              const isCorrect = userAnswerIndex === questionData.correct;
+
               return (
-                <div key={index} className={`result-item ${result.correct ? 'correct' : 'incorrect'}`}>
+                <div key={index} className={`result-item ${isCorrect ? 'correct' : 'incorrect'}`}>
                   <div className="result-question">
                     <span className="question-number">Q{index + 1}</span>
-                    <span className="question-text">{result.question}</span>
+                    <span className="question-text">{questionData.question}</span>
                   </div>
                   <div className="result-answers">
-                    <div className={`answer-result ${result.correct ? 'correct' : 'incorrect'}`}>
+                    <div className={`answer-result ${isCorrect ? 'correct' : 'incorrect'}`}>
                       <span className="answer-label">Your Answer:</span>
-                      <span className="answer-text">{result.user_answer}</span>
-                      {result.correct ? <span className="checkmark">CORRECT</span> : <span className="cross">WRONG</span>}
+                      <span className="answer-text">{userAnswer}</span>
+                      {isCorrect ? <span className="checkmark">CORRECT</span> : <span className="cross">WRONG</span>}
                     </div>
-                    {!result.correct && (
+                    {!isCorrect && (
                       <div className="correct-answer">
                         <span className="answer-label">Correct Answer:</span>
-                        <span className="answer-text">{result.correct_answer}</span>
+                        <span className="answer-text">{correctAnswer}</span>
                       </div>
                     )}
                   </div>
-                  {questionData && questionData.explanation && (
+                  {questionData.explanation && (
                     <div className="result-explanation">
                       <span className="explanation-label">Explanation:</span>
                       <p className="explanation-text">{questionData.explanation}</p>
